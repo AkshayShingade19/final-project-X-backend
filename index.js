@@ -15,16 +15,28 @@ databaseConnection();
 
 const app = express();
 
-// Allow cross-origin requests
+
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://your-frontend-domain.vercel.app' // add your production domain if deployed
+  'https://your-frontend-domain.vercel.app',
+  'https://685fb667aafe740008ec0ad0--capable-babka-252536.netlify.app'  // ✅ ADD THIS
 ];
 
 app.use(cors({
   origin: allowedOrigins,
-  credentials: true,
+  credentials: true
 }));
+
+// Allow cross-origin requests
+// const allowedOrigins = [
+//   'http://localhost:3000',
+//   'https://your-frontend-domain.vercel.app' // add your production domain if deployed
+// ];
+
+// app.use(cors({
+//   origin: allowedOrigins,
+//   credentials: true,
+// }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
