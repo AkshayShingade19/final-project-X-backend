@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import cors from "cors"; // <-- add this
+import cors from "cors";
 import cookieParser from "cookie-parser";
 import userRoute from "./routes/userRoute.js";
 import tweetRoute from "./routes/tweetRoute.js";
@@ -15,29 +15,26 @@ databaseConnection();
 
 const app = express();
 
-
+// ✅ Define allowed frontend origins
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://your-frontend-domain.vercel.app',
-  'https://685fb667aafe740008ec0ad0--capable-babka-252536.netlify.app'  // ✅ ADD THIS
+  'https://capable-babka-252536.netlify.app',
+  'https://685fb667aafe740008ec0ad0--capable-babka-252536.netlify.app' // Netlify preview URL
 ];
 
+// ✅ CORS middleware with dynamic origin check
 app.use(cors({
-  origin: allowedOrigins,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 
-// Allow cross-origin requests
-// const allowedOrigins = [
-//   'http://localhost:3000',
-//   'https://your-frontend-domain.vercel.app' // add your production domain if deployed
-// ];
-
-// app.use(cors({
-//   origin: allowedOrigins,
-//   credentials: true,
-// }));
-
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
