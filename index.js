@@ -17,18 +17,19 @@ const app = express();
 
 // ✅ Define allowed frontend origins
 const allowedOrigins = [
-  'http://localhost:3000',
+  'http://localhost:3000', // for local testing
   'https://capable-babka-252536.netlify.app',
-  'https://685fb667aafe740008ec0ad0--capable-babka-252536.netlify.app' // Netlify preview URL
+  'https://685fb667aafe740008ec0ad0--capable-babka-252536.netlify.app' // Netlify preview
 ];
 
 // ✅ CORS middleware with dynamic origin check
 app.use(cors({
   origin: function (origin, callback) {
+    // allow requests with no origin (like mobile apps, curl, Postman)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error('Not allowed by CORS: ' + origin));
     }
   },
   credentials: true
@@ -49,5 +50,5 @@ app.use("/api/v1/tweet", tweetRoute);
 
 // Start server
 app.listen(port, () => {
-  console.log(`Server listening at port ${port}`);
+  console.log(`✅ Server listening at port ${port}`);
 });
